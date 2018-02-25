@@ -18,7 +18,7 @@
           age = Math.floor(dob.diffYears(new XDate()));
 
           var fname = patient.name[0].given.join(" "),
-          lname = patient.name[0].family.join(" ");
+          lname = patient.name[0].family;
 
 
           var hscrp = byCodes("30522-7");

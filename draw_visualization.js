@@ -6,6 +6,300 @@ var score_if_non_smoker
     , score_if_sbp_of_120
     , score_if_all_optimal = null;
 
+
+var qrisk_score = function(){
+  var params = {},
+      result = null;
+
+  if (p.gender.value === 'female') {
+    params = {
+      'age1': -2,
+      'age2': 1,
+      'bmi1': -2,
+      'bmi2': -2,
+      'age12': 0.053274843841791,
+      'age22': 4.332503318786621,
+      'bmi12': 0.154946178197861,
+      'bmi22': 0.144462317228317,
+      'rati' : 3.476326465606690,
+      'sbp': 123.130012512207030,
+      'sbps5' : 9.002537727355957,
+      'town' : 0.392308831214905,
+      'age13': -8.1388109247726188,
+      'age23': 0.79733376689699098,
+      'bmi13': 0.29236092275460052,
+      'bmi23': -4.1513300213837665,
+      'rati1' : 0.15338035820802554,
+      'sbp1': 0.013131488407103424,
+      'sbps51' : 0.0078894541014586095,
+      'town1' : 0.077223790588590108,
+      'Iethrisk' : [
+              0,
+              0,
+              0.2804031433299542500000000,
+              0.5629899414207539800000000,
+              0.2959000085111651600000000,
+              0.0727853798779825450000000,
+              -0.1707213550885731700000000,
+              -0.3937104331487497100000000,
+              -0.3263249528353027200000000,
+              -0.1712705688324178400000000
+      ],
+      'Ismoke' : [
+              0,
+              0.1338683378654626200000000,
+              0.5620085801243853700000000,
+              0.6674959337750254700000000,
+              0.8494817764483084700000000
+      ],
+      'AF' : 1.5923354969269663,
+      'atypical' : 0.25237642070115557,
+      'steroids' : 0.59520725304601851,
+      'impotence' : 0,
+      'migraine' : 0.301267260870345,
+      'ra' : 0.21364803435181942,
+      'renal' : 0.65194569493845833,
+      'semi' : 0.12555308058820178,
+      'sle' : 0.75880938654267693,
+      'hyp' : 0.50931593683423004,
+      'type1' : 1.7267977510537347,
+      'type2' : 1.0688773244615468,
+      'fhcvd' : 0.45445319020896213,
+      'survivor' : 0.988876402378082
+    }
+  } else {
+    params = {
+      'age1': -1,
+      'age2': 3,
+      'bmi1': -2,
+      'bmi2': -2,
+      'age12': 0.234766781330109,
+      'age22': 77.284080505371094,
+      'bmi12': 0.149176135659218,
+      'bmi22': 0.141913309693336,
+      'rati' : 4.300998687744141,
+      'sbp': 128.571578979492190,
+      'sbps5' : 8.756621360778809,
+      'town' : 0.526304900646210,
+      'age13': -17.839781666005575,
+      'age23': 0.0022964880605765492,
+      'bmi13': 2.4562776660536358,
+      'bmi23': -8.3011122314711354,
+      'rati1' : 0.17340196856327111,
+      'sbp1': 0.012910126542553305,
+      'sbps51' : 0.010251914291290456,
+      'town1' : 0.033268201277287295,
+      'Iethrisk' : [
+              0,
+              0,
+              0.2771924876030827900000000,
+              0.4744636071493126800000000,
+              0.5296172991968937100000000,
+              0.0351001591862990170000000,
+              -0.3580789966932791900000000,
+              -0.4005648523216514000000000,
+              -0.4152279288983017300000000,
+              -0.2632134813474996700000000
+      ],
+      'Ismoke' : [
+              0,
+              0.1912822286338898300000000,
+              0.5524158819264555200000000,
+              0.6383505302750607200000000,
+              0.7898381988185801900000000
+      ],
+      'AF' : 0.88209236928054657,
+      'atypical' : 0.13046879855173513,
+      'steroids' : 0.45485399750445543,
+      'impotence' : 0.22251859086705383,
+      'migraine' : 0.25584178074159913,
+      'ra' : 0.20970658013956567,
+      'renal' : 0.71853261288274384,
+      'semi' : 0.12133039882047164,
+      'sle' : 0.4401572174457522,
+      'hyp' : 0.51659871082695474,
+      'type1' : 1.2343425521675175,
+      'type2' : 0.85942071430932221,
+      'fhcvd' : 0.54055469009390156,
+      'survivor' : 0.977268040180206
+    }
+  }
+
+  if (p.gender.value === 'female') {
+    interactionParams = {
+      'age1smoke1' : -4.7057161785851891,
+      'age1smoke2' : -2.7430383403573337,
+      'age1smoke3' : -0.86608088829392182,
+      'age1smoke4' : 0.90241562369710648,
+      'age1AF' : 19.938034889546561,
+      'age1steroids' : -0.98408045235936281,
+      'age1impotence' : 0,
+      'age1migraine' : 1.7634979587872999,
+      'age1renal' : -3.5874047731694114,
+      'age1sle' : 19.690303738638292,
+      'age1hyp' : 11.872809733921812,
+      'age1type1' : -1.2444332714320747,
+      'age1type2' : 6.8652342000009599,
+      'age1bmi1' : 23.802623412141742,
+      'age1bmi2' : -71.184947692087007,
+      'age1fhcvd' : 0.99467807940435127,
+      'age1sbp' : 0.034131842338615485,
+      'age1town' : -1.0301180802035639,
+      'age2smoke1' : -0.075589244643193026,
+      'age2smoke2' : -0.11951192874867074,
+      'age2smoke3' : -0.11951192874867074,
+      'age2smoke4' : -0.13991853591718389,
+      'age2AF' : -0.076182651011162505,
+      'age2steroids' : -0.12005364946742472,
+      'age2impotence' : 0,
+      'age2migraine' : -0.065586917898699859,
+      'age2renal' : -0.22688873086442507,
+      'age2sle' : 0.077347949679016273,
+      'age2hyp' : 0.00096857823588174436,
+      'age2type1' : -0.28724064624488949,
+      'age2type2' : -0.097112252590695489,
+      'age2bmi1' : 0.52369958933664429,
+      'age2bmi2' : 0.045744190122323759,
+      'age2fhcvd' : -0.076885051698423038,
+      'age2sbp' : -0.0015082501423272358,
+      'age2town' : -0.031593414674962329,
+    }
+  } else {
+    interactionParams = {
+      'age1smoke1' : -0.21011133933516346,
+      'age1smoke2' : 0.75268676447503191,
+      'age1smoke3' : 0.99315887556405791,
+      'age1smoke4' : 2.1331163414389076,
+      'age1AF' : 3.4896675530623207,
+      'age1steroids' : 1.1708133653489108,
+      'age1impotence' : -1.506400985745431,
+      'age1migraine' : 2.3491159871402441,
+      'age1renal' : -0.50656716327223694,
+      'age1sle' : 0,
+      'age1hyp' : 6.5114581098532671,
+      'age1type1' : 5.3379864878006531,
+      'age1type2' : 3.6461817406221311,
+      'age1bmi1' : 31.004952956033886,
+      'age1bmi2' : -111.29157184391643,
+      'age1fhcvd' : 2.7808628508531887,
+      'age1sbp' : 0.018858524469865853,
+      'age1town' : -0.1007554870063731,
+      'age2smoke1' : -0.00049854870275326121,
+      'age2smoke2' : -0.00079875633317385414,
+      'age2smoke3' : -0.00083706184266251296,
+      'age2smoke4' : -0.00078400319155637289,
+      'age2AF' : -0.00034995608340636049,
+      'age2steroids' : -0.0002496045095297166,
+      'age2impotence' : -0.0011058218441227373,
+      'age2migraine' : 0.00019896446041478631,
+      'age2renal' : -0.0018325930166498813,
+      'age2sle' : 0,
+      'age2hyp' : 0.00063838053104165013,
+      'age2type1' : 0.0006409780808752897,
+      'age2type2' : -0.00024695695588868315,
+      'age2bmi1' : 0.0050380102356322029,
+      'age2bmi2' : -0.013074483002524319,
+      'age2fhcvd' : -0.00024791809907396037,
+      'age2sbp' : -0.00001271874191588457,
+      'age2town' : -0.000093299642323272888,
+    }
+  }
+  
+  var dage = p.age/10;
+  var age_1 = Math.pow(dage, params.age1);
+  var age_2 = Math.pow(dage, params.age2);;
+  var dbmi = p.bmi/10;
+  var bmi_1 = Math.pow(dbmi,params.bmi1);
+  var bmi_2 = Math.pow(dbmi,params.bmi1)*Math.log(dbmi);
+  
+  /* Centring the continuous variables */
+
+  age_1 = age_1 - params.age12;
+	age_2 = age_2 - params.age22;
+	bmi_1 = bmi_1 - params.bmi12;
+  bmi_2 = bmi_2 - params.bmi22;
+  var rati = p.rati - params.rati;
+  var sbp = p.sbp - params.sbp;
+  var sbps5 = p.sbps5 - params.sbps5;
+  var town = 0 - params.town;
+
+  /* Start of Sum */
+  var a = 0;
+  
+  a += params.Iethrisk[p.ethrisk];
+  a += params.Ismoke[p.smoke_cat];
+
+  /* Sum from continuous values */
+
+  a += age_1 * params.age13;
+	a += age_2 * params.age23
+	a += bmi_1 * params.bmi13;
+	a += bmi_2 * params.bmi23;
+	a += rati * pparams.rati1;
+	a += sbp * params.sbp1;
+	a += sbps5 * params.sbps51;
+  a += town * params.town1;
+  
+  /* Sum from boolean values */
+
+  a += p[b_AF] * params.AF;
+	a += p[b_atypicalantipsy] * params.atypical;
+	a += p[b_corticosteroids] * params.steroids;
+	a += p[b_impotence2] * params.impotence;
+	a += p[b_migraine] * params.migraine;
+	a += p[b_ra] * params.ra;
+	a += p[b_renal] * params.renal;
+	a += p[b_semi] * params.semi;
+	a += p[b_sle] * params.sle;
+	a += p[b_treatedhyp] * params.hyp;
+	a += p[b_type1] * params.type1;
+	a += p[b_type2] * params.type2;
+  a += p[fh_cvd] * params.fhcvd;
+  
+  /* Sum from interaction terms */
+
+  a += age_1 * (p[smoke_cat]==1) * interactionParams.age1smoke1;
+	a += age_1 * (p[smoke_cat]==2) * interactionParams.age1smoke2;
+	a += age_1 * (p[smoke_cat]==3) * interactionParams.age1smoke3;
+	a += age_1 * (p[smoke_cat]==4) * interactionParams.age1smoke4;
+	a += age_1 * p[b_AF] * interactionParams.age1AF;
+  a += age_1 * p[b_corticosteroids] * interactionParams.age1steroids;
+  a += age_1 * p[b_impotence2] * interactionParams.age1impotence;
+	a += age_1 * p[b_migraine] * interactionParams.age1migraine;
+	a += age_1 * p[b_renal] * interactionParams.age1renal;
+	a += age_1 * p[b_sle] * interactionParams.age1sle;
+	a += age_1* p[b_treatedhyp] * interactionParams.age1hyp;
+	a += age_1 * p[b_type1] * interactionParams.age1type1;
+	a += age_1 * p[b_type2] * interactionParams.age1type2;
+	a += age_1 * p[bmi_1] * interactionParams.age1bmi1;
+	a += age_1 * p[bmi_2] * interactionParams.age1bmi2;
+	a += age_1 * p[fh_cvd] * interactionParams.age1fhcvd;
+	a += age_1 * p[sbp] * interactionParams.age1sbp;
+	a += age_1 * 0 * interactionParams.age1town;
+	a += age_2 * (p[smoke_cat]==1) * interactionParams.age2smoke1;
+	a += age_2 * (p[smoke_cat]==2) * interactionParams.age2smoke2;
+	a += age_2 * (p[smoke_cat]==3) * interactionParams.age2smoke3;
+	a += age_2 * (p[smoke_cat]==4) * interactionParams.age2smoke4;
+	a += age_2 * p[b_AF] * interactionParams.age2AF;
+  a += age_2 * p[b_corticosteroids] * interactionParams.age2steroids;
+  a += age_2 * p[b_impotence2] * interactionParams.age2impotence;
+	a += age_2 * p[b_migraine] * interactionParams.age2migraine;
+	a += age_2 * p[b_renal] * interactionParams.age2renal;
+	a += age_2 * p[b_sle] * interactionParams.age2sle;
+	a += age_2* p[b_treatedhyp] * interactionParams.age2hyp;
+	a += age_2 * p[b_type1] * interactionParams.age2type1;
+	a += age_2 * p[b_type2] * interactionParams.age2type2;
+	a += age_2 * p[bmi_1] * interactionParams.age2bmi1;
+	a += age_2 * p[bmi_2] * interactionParams.age2bmi2;
+	a += age_2 * p[fh_cvd] * interactionParams.age2fhcvd;
+	a += age_2 * p[sbp] * interactionParams.age2sbp;
+  a += age_2 * 0 * interactionParams.age2town;
+  
+  result = 100 * (1 - Math.pow(params.survivor, Math.exp(a)));
+  
+  return result;
+}
+
 var reynolds_risk_score = function(p){
   var parameters = {}
     , result = null;
