@@ -7,7 +7,7 @@ var score_if_non_smoker
     , score_if_all_optimal = null;
 
 
-var qrisk_score = function(){
+var qrisk_score = function(p){
   var params = {},
       result = null;
 
@@ -296,7 +296,7 @@ var qrisk_score = function(){
   a += age_2 * 0 * interactionParams.age2town;
   
   result = 100 * (1 - Math.pow(params.survivor, Math.exp(a)));
-  
+
   return result;
 }
 
