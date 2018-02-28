@@ -45,9 +45,9 @@
                 // Atrial Fibrillation
                 var b_AF = byCodes("54776-0");
                 var b_atypicalantipsy = byCodes("54984-0");
-                var b_corticosteroids = byCodes("57527-4"); // huge range to choose from - line 52138
+                var b_corticosteroids = byCodes("57527-4"); // huge range to choose from - CSV file line 52138
                 var b_migraine = byCodes("65392-3");
-                var b_ra = byCodes("75633-8"); // Activity score instead of bool? - line 71784
+                var b_ra = byCodes("75633-8"); // Activity score instead of bool? - CSV file line 71784
                 var b_renal = byCodes("88239-9"); // option out of two & unsure about this
                 var b_semi = byCodes("45668-1", "71758-7", "71757-9"); // (schizophrenia, bipolar score, Depression score) // option of "psychotic illness without schizophrenia"
                 var b_sle = byCodes("64391-6"); // Systemic lupus erythematosus
