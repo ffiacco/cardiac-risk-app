@@ -43,17 +43,17 @@
                 // Start 
 
                 // Atrial Fibrillation
-                b_AF = byCodes("54776-0");
-                b_atypicalantipsy = byCodes("54984-0");
-                b_corticosteroids = byCodes("57527-4"); // huge range to choose from - line 52138
-                b_migraine = byCodes("65392-3");
-                b_ra = byCodes("75633-8"); // Activity score instead of bool? - line 71784
-                b_renal = byCodes("88239-9"); // option out of two & unsure about this
-                b_semi = byCodes("45668-1", "71758-7", "71757-9"); // (schizophrenia, bipolar score, Depression score) // option of "psychotic illness without schizophrenia"
-                b_sle = byCodes("64391-6"); // Systemic lupus erythematosus
-                b_treatedhyp = byCodes("66238-7"); // blood pressure treatment
-                b_type1 = byCodes("62796-8"); // Type 1 and 2 Diabetes together option only - Diabetes status option
-                b_type2 = byCodes("62796-8"); // Type 1 and 2 Diabetes together option
+                var b_AF = byCodes("54776-0");
+                var b_atypicalantipsy = byCodes("54984-0");
+                var b_corticosteroids = byCodes("57527-4"); // huge range to choose from - line 52138
+                var b_migraine = byCodes("65392-3");
+                var b_ra = byCodes("75633-8"); // Activity score instead of bool? - line 71784
+                var b_renal = byCodes("88239-9"); // option out of two & unsure about this
+                var b_semi = byCodes("45668-1", "71758-7", "71757-9"); // (schizophrenia, bipolar score, Depression score) // option of "psychotic illness without schizophrenia"
+                var b_sle = byCodes("64391-6"); // Systemic lupus erythematosus
+                var b_treatedhyp = byCodes("66238-7"); // blood pressure treatment
+                var b_type1 = byCodes("62796-8"); // Type 1 and 2 Diabetes together option only - Diabetes status option
+                var b_type2 = byCodes("62796-8"); // Type 1 and 2 Diabetes together option
 
                 var bmi = byCodes("39156-5"); // Body Mass Index
                 var ethrisk = byCodes("46463-6"); // Race or ethnicity
@@ -118,6 +118,26 @@
                 p.HDL = { value: cholesterol_in_mg_per_dl(hdl[0]) };
                 p.LDL = { value: p.cholesterol.value - p.HDL.value };
                 p.sbp = { value: systolic };
+                // additional params
+                p.b_AF = b_AF;
+                p.b_atypicalantipsy = b_atypicalantipsy;
+                p.b_corticosteroids = b_corticosteroids;
+                p.b_migraine = b_migraine;
+                p.b_ra = b_ra;
+                p.b_renal = b_renal;
+                p.b_semi = b_semi;
+                p.b_sle = b_sle;
+                p.b_treatedhyp = b_treatedhyp;
+                p.b_type1 = b_type1;
+                p.b_type2 = b_type1;
+                p.bmi = bmi;
+                p.ethrisk = ethrisk;
+                p.fh_cvd = fh_cvd;
+                p.rati = rati;
+                p.sbp = sbp;
+                p.sbps5 = sbps5;
+                p.smoke_cat = smoke_cat;
+                p.b_impotence = b_impotence;
 
                 ret.resolve(p);
             });

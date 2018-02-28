@@ -380,7 +380,27 @@ var p = {
   ,'sbp':         {'value': null}
   ,'smoker_p':    {'value': null}
   ,'fx_of_mi_p':  {'value': null}
+  ,'b_AF':        {'value': null}
+  ,'b_b_atypicalantipsy': {'value': null}
+  , 'b_migraine': {'value': null}
+  ,'b_ra' :       {'value': null}
+  , 'b_renal':    {'value': null}
+  ,'b_semi'  :    {'value': null}
+  , 'b_sle':      {'value': null}
+  ,'b_treatedhyp':{'value': null}
+  , 'b_type1':    {'value': null}
+  ,'b_type2':     {'value': null}
+  , 'bmi':        {'value': null}
+  ,'ethrisk':     {'value': null}
+  , 'fh_cvd':     {'value': null}
+  , 'rati':       {'value': null}
+  , 'sbp':        {'value': null}
+  , 'sbps5':      {'value': null}
+  , 'smoke_cat':  {'value': null}
+  , 'b_impotence':{'value': null}
 }
+
+
 
 var redraw = function(){
   var score = reynolds_risk_score(p);
