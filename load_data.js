@@ -40,10 +40,10 @@
                 var fname = patient.name[0].given.join(" "),
                     lname = patient.name[0].family;
 
-                // Start 
+                // Start
 
-                // Atrial Fibrillation
-                var b_AF = byCodes("54776-0");
+
+                var b_AF = byCodes("54776-0"); // Atrial Fibrillation
                 var b_atypicalantipsy = byCodes("54984-0");
                 var b_corticosteroids = byCodes("57527-4"); // huge range to choose from - CSV file line 52138
                 var b_migraine = byCodes("65392-3");
@@ -59,12 +59,19 @@
                 var ethrisk = byCodes("46463-6"); // Race or ethnicity
                 var fh_cvd = byCodes("58238-7"); // family history of heart attack measure // Angina or heart attack in 1st degree relative under 60?
                 var rati = byCodes(""); //  Cholesterol/HDL ratio -> Calculate from values below?
-                var sbp = byCodes("60984-2"); // Aorta Intravascular systolic - which systolic though?// systolic blood pressure 
+                var sbp = byCodes("60984-2"); // Aorta Intravascular systolic - which systolic though?// systolic blood pressure
                 var sbps5 = byCodes("8490-5"); // 24 hour mean - no S.d found?? // standard deviation of at least two more recent systolic blood pressure readings
                 var smoke_cat = byCodes("70483-3"); // Have you ever smoked // options of pipes, cigars, cigarettes
                 var b_impotence = byCodes("70318-1"); //  For men -have and maintain an erection past 7D ??// patient has a diagnosis of or treatment for erectile disfunction
-                
-                // End 
+
+
+                // Additional variables for Scottish algorithm
+                chdFamilyHistory = fh_cvd;
+                cigsperDay = byCode("63640-7");
+                postCode = byCodes("45401-7"); //Zip code
+
+                // End
+
 
                 var hscrp = byCodes("30522-7");
                 var cholesterol = byCodes("14647-2", "2093-3");
