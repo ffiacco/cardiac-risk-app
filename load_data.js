@@ -55,6 +55,8 @@
                 var b_type1 = byCodes("62796-8"); // Type 1 and 2 Diabetes together option only - Diabetes status option
                 var b_type2 = byCodes("62796-8"); // Type 1 and 2 Diabetes together option
 
+                var b_diabetes = byCode("62787-7");
+
                 var bmi = byCodes("39156-5"); // Body Mass Index
                 var ethrisk = byCodes("46463-6"); // Race or ethnicity
                 var fh_cvd = byCodes("58238-7"); // family history of heart attack measure // Angina or heart attack in 1st degree relative under 60?
@@ -66,9 +68,11 @@
 
 
                 // Additional variables for Scottish algorithm
-                chdFamilyHistory = fh_cvd;
-                cigsperDay = byCode("63640-7");
-                postCode = byCodes("45401-7"); //Zip code
+                var chdFamilyHistory = fh_cvd;
+                var cigsperDay = byCode("63640-7");
+                var postCode = byCodes("45401-7"); //Zip code
+
+                var arthritis = byCode("45647-5"); // arthritis
 
                 // End
 
@@ -145,6 +149,11 @@
                 p.sbps5 = sbps5;
                 p.smoke_cat = smoke_cat;
                 p.b_impotence = b_impotence;
+                p.postCode = postCode;
+                p.cigsperDay = cigsperDay;
+                p.chdFamilyHistory = chdFamilyHistory;
+                p.arthritis = arthritis;
+                
 
                 ret.resolve(p);
             });
