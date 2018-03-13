@@ -235,65 +235,65 @@ var qrisk_score = function(p){
 	a += age_2 * params.age23
 	a += bmi_1 * params.bmi13;
 	a += bmi_2 * params.bmi23;
-	a += rati * pparams.rati1;
+	a += rati * params.rati1;
 	a += sbp * params.sbp1;
 	a += sbps5 * params.sbps51;
   a += town * params.town1;
 
   /* Sum from boolean values */
 
-  a += p[b_AF] * params.AF;
-	a += p[b_atypicalantipsy] * params.atypical;
-	a += p[b_corticosteroids] * params.steroids;
-	a += p[b_impotence2] * params.impotence;
-	a += p[b_migraine] * params.migraine;
-	a += p[b_ra] * params.ra;
-	a += p[b_renal] * params.renal;
-	a += p[b_semi] * params.semi;
-	a += p[b_sle] * params.sle;
-	a += p[b_treatedhyp] * params.hyp;
-	a += p[b_type1] * params.type1;
-	a += p[b_type2] * params.type2;
-  a += p[fh_cvd] * params.fhcvd;
+  a += p["b_AF"] * params.AF;
+	a += p["b_atypicalantipsy"] * params.atypical;
+	a += p["b_corticosteroids"] * params.steroids;
+	a += p["b_impotence"] * params.impotence;
+	a += p["b_migraine"] * params.migraine;
+	a += p["b_ra"] * params.ra;
+	a += p["b_renal"] * params.renal;
+	a += p["b_semi"] * params.semi;
+	a += p["b_sle"] * params.sle;
+	a += p["b_treatedhyp"] * params.hyp;
+	a += p["b_type1"] * params.type1;
+	a += p["b_type2"] * params.type2;
+  a += p["fh_cvd"] * params.fhcvd;
 
   /* Sum from interaction terms */
 
-  a += age_1 * (p[smoke_cat]==1) * interactionParams.age1smoke1;
-	a += age_1 * (p[smoke_cat]==2) * interactionParams.age1smoke2;
-	a += age_1 * (p[smoke_cat]==3) * interactionParams.age1smoke3;
-	a += age_1 * (p[smoke_cat]==4) * interactionParams.age1smoke4;
-	a += age_1 * p[b_AF] * interactionParams.age1AF;
-  a += age_1 * p[b_corticosteroids] * interactionParams.age1steroids;
-  a += age_1 * p[b_impotence2] * interactionParams.age1impotence;
-	a += age_1 * p[b_migraine] * interactionParams.age1migraine;
-	a += age_1 * p[b_renal] * interactionParams.age1renal;
-	a += age_1 * p[b_sle] * interactionParams.age1sle;
-	a += age_1* p[b_treatedhyp] * interactionParams.age1hyp;
-	a += age_1 * p[b_type1] * interactionParams.age1type1;
-	a += age_1 * p[b_type2] * interactionParams.age1type2;
-	a += age_1 * p[bmi_1] * interactionParams.age1bmi1;
-	a += age_1 * p[bmi_2] * interactionParams.age1bmi2;
-	a += age_1 * p[fh_cvd] * interactionParams.age1fhcvd;
-	a += age_1 * p[sbp] * interactionParams.age1sbp;
-	a += age_1 * 0 * interactionParams.age1town;
-	a += age_2 * (p[smoke_cat]==1) * interactionParams.age2smoke1;
-	a += age_2 * (p[smoke_cat]==2) * interactionParams.age2smoke2;
-	a += age_2 * (p[smoke_cat]==3) * interactionParams.age2smoke3;
-	a += age_2 * (p[smoke_cat]==4) * interactionParams.age2smoke4;
-	a += age_2 * p[b_AF] * interactionParams.age2AF;
-  a += age_2 * p[b_corticosteroids] * interactionParams.age2steroids;
-  a += age_2 * p[b_impotence2] * interactionParams.age2impotence;
-	a += age_2 * p[b_migraine] * interactionParams.age2migraine;
-	a += age_2 * p[b_renal] * interactionParams.age2renal;
-	a += age_2 * p[b_sle] * interactionParams.age2sle;
-	a += age_2* p[b_treatedhyp] * interactionParams.age2hyp;
-	a += age_2 * p[b_type1] * interactionParams.age2type1;
-	a += age_2 * p[b_type2] * interactionParams.age2type2;
-	a += age_2 * p[bmi_1] * interactionParams.age2bmi1;
-	a += age_2 * p[bmi_2] * interactionParams.age2bmi2;
-	a += age_2 * p[fh_cvd] * interactionParams.age2fhcvd;
-	a += age_2 * p[sbp] * interactionParams.age2sbp;
-  a += age_2 * 0 * interactionParams.age2town;
+  a += age_1 * (p["smoke_cat"]==1) * interactionParams.age1smoke1;
+	a += age_1 * (p["smoke_cat"]==2) * interactionParams.age1smoke2;
+	a += age_1 * (p["smoke_cat"]==3) * interactionParams.age1smoke3;
+	a += age_1 * (p["smoke_cat"]==4) * interactionParams.age1smoke4;
+	a += age_1 * p["b_AF"] * interactionParams.age1AF;
+  a += age_1 * p["b_corticosteroids"] * interactionParams.age1steroids;
+  a += age_1 * p["b_impotence"] * interactionParams.age1impotence;
+	a += age_1 * p["b_migraine"] * interactionParams.age1migraine;
+	a += age_1 * p["b_renal"] * interactionParams.age1renal;
+	a += age_1 * p["b_sle"] * interactionParams.age1sle;
+	a += age_1* p["b_treatedhyp"] * interactionParams.age1hyp;
+	a += age_1 * p["b_type1"] * interactionParams.age1type1;
+	a += age_1 * p["b_type2"] * interactionParams.age1type2;
+	a += age_1 * bmi_1 * interactionParams.age1bmi1;
+	a += age_1 * bmi_2 * interactionParams.age1bmi2;
+	a += age_1 * p["fh_cvd"] * interactionParams.age1fhcvd;
+	a += age_1 * sbp * interactionParams.age1sbp;
+	a += age_1 * town * interactionParams.age1town;
+	a += age_2 * (p["smoke_cat"]==1) * interactionParams.age2smoke1;
+	a += age_2 * (p["smoke_cat"]==2) * interactionParams.age2smoke2;
+	a += age_2 * (p["smoke_cat"]==3) * interactionParams.age2smoke3;
+	a += age_2 * (p["smoke_cat"]==4) * interactionParams.age2smoke4;
+	a += age_2 * p["b_AF"] * interactionParams.age2AF;
+  a += age_2 * p["b_corticosteroids"] * interactionParams.age2steroids;
+  a += age_2 * p["b_impotence"] * interactionParams.age2impotence;
+	a += age_2 * p["b_migraine"] * interactionParams.age2migraine;
+	a += age_2 * p["b_renal"] * interactionParams.age2renal;
+	a += age_2 * p["b_sle"] * interactionParams.age2sle;
+	a += age_2* p["b_treatedhyp"] * interactionParams.age2hyp;
+	a += age_2 * p["b_type1"] * interactionParams.age2type1;
+	a += age_2 * p["b_type2"] * interactionParams.age2type2;
+	a += age_2 * bmi_1 * interactionParams.age2bmi1;
+	a += age_2 * bmi_2 * interactionParams.age2bmi2;
+	a += age_2 * p["fh_cvd"] * interactionParams.age2fhcvd;
+	a += age_2 * sbp * interactionParams.age2sbp;
+  a += age_2 * town * interactionParams.age2town;
 
   result = 100 * (1 - Math.pow(params.survivor, Math.exp(a)));
 
@@ -352,6 +352,7 @@ var reynolds_risk_score = function(p){
   return Math.round((result < 10 ? result.toPrecision(1) : result.toPrecision(2)))
 }
 
+
 var compute_other_scores = function(){
   p2 = $.extend(true, {}, p);
   p2.sbp.value = (p2.sbp.value - 10 >= 0) ? p2.sbp.value - 10 : 0;
@@ -383,6 +384,7 @@ var p = {
   ,'b_AF':        {'value': null}
   ,'b_atypicalantipsy': {'value': null}
   ,'b_migraine':  {'value': null}
+  ,'b_corticosteroids': {'value': null}
   ,'b_ra' :       {'value': null}
   ,'b_renal':     {'value': null}
   ,'b_semi'  :    {'value': null}
