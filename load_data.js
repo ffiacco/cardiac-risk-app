@@ -43,44 +43,42 @@
                 // Start
 
 
-                var b_AF = byCodes("54776-0"); // Atrial Fibrillation
-                var b_atypicalantipsy = byCodes("54984-0");
-                var b_corticosteroids = byCodes("57527-4"); // huge range to choose from - CSV file line 52138
-                var b_migraine = byCodes("65392-3");
-                var b_ra = byCodes("75633-8"); // Activity score instead of bool? - CSV file line 71784
-                var b_renal = byCodes("88239-9"); // option out of two & unsure about this
-                var b_semi = byCodes("45668-1", "71758-7", "71757-9"); // (schizophrenia, bipolar score, Depression score) // option of "psychotic illness without schizophrenia"
-                var b_sle = byCodes("64391-6"); // Systemic lupus erythematosus
-                var b_treatedhyp = byCodes("66238-7"); // blood pressure treatment
-                var b_type1 = byCodes("62796-8"); // Type 1 and 2 Diabetes together option only - Diabetes status option
-                var b_type2 = byCodes("62796-8"); // Type 1 and 2 Diabetes together option
+                var b_AF = byCodes("54776-0")[0].valueQuantity.value; // Atrial Fibrillation
+                var b_atypicalantipsy = byCodes("54984-0")[0].valueQuantity.value;
+                var b_corticosteroids = byCodes("57527-4")[0].valueQuantity.value; // huge range to choose from - CSV file line 52138
+                var b_migraine = byCodes("65392-3")[0].valueQuantity.value;
+                var b_ra = byCodes("75633-8")[0].valueQuantity.value; // Activity score instead of bool? - CSV file line 71784
+                var b_renal = byCodes("88239-9")[0].valueQuantity.value; // option out of two & unsure about this
+                var b_semi = byCodes("45668-1")[0].valueQuantity.value; // (schizophrenia, bipolar score, Depression score) // option of "psychotic illness without schizophrenia"
+                var b_sle = byCodes("64391-6")[0].valueQuantity.value; // Systemic lupus erythematosus
+                var b_treatedhyp = byCodes("66238-7")[0].valueQuantity.value; // blood pressure treatment
+                var b_type1 = 1//byCodes("62796-8")[0].valueQuantity.value1; // Type 1 and 2 Diabetes together option only - Diabetes status option
+                var b_type2 = 0//byCodes("62796-8")[0].valueQuantity.value2; // Type 1 and 2 Diabetes together option
 
-                var b_diabetes = byCode("62787-7");
-
-                var bmi = byCodes("39156-5"); // Body Mass Index
-                var ethrisk = byCodes("46463-6"); // Race or ethnicity
-                var fh_cvd = byCodes("58238-7"); // family history of heart attack measure // Angina or heart attack in 1st degree relative under 60?
-                var rati = byCodes(""); //  Cholesterol/HDL ratio -> Calculate from values below?
-                var sbp = byCodes("60984-2"); // Aorta Intravascular systolic - which systolic though?// systolic blood pressure
-                var sbps5 = byCodes("8490-5"); // 24 hour mean - no S.d found?? // standard deviation of at least two more recent systolic blood pressure readings
-                var smoke_cat = byCodes("70483-3"); // Have you ever smoked // options of pipes, cigars, cigarettes
-                var b_impotence = byCodes("70318-1"); //  For men -have and maintain an erection past 7D ??// patient has a diagnosis of or treatment for erectile disfunction
+                var bmi = byCodes("39156-5")[0].valueQuantity.value; // Body Mass Index
+                var ethrisk = byCodes("46463-6")[0].valueQuantity.value; // Race or ethnicity
+                var fh_cvd = byCodes("58238-7")[0].valueQuantity.value; // family history of heart attack measure // Angina or heart attack in 1st degree relative under 60?
+                var sbp = byCodes("60984-2")[0].valueQuantity.value; // Aorta Intravascular systolic - which systolic though?// systolic blood pressure
+                var sbps5 = byCodes("8490-5")[0].valueQuantity.value; // 24 hour mean - no S.d found?? // standard deviation of at least two more recent systolic blood pressure readings
+                var smoke_cat = byCodes("70483-3")[0].valueQuantity.value; // Have you ever smoked // options of pipes, cigars, cigarettes
+                var b_impotence = byCodes("70318-1")[0].valueQuantity.value; //  For men -have and maintain an erection past 7D ??// patient has a diagnosis of or treatment for erectile disfunction
 
 
                 // Additional variables for Scottish algorithm
                 var chdFamilyHistory = fh_cvd;
-                var cigsperDay = byCode("63640-7");
-                var postCode = byCodes("45401-7"); //Zip code
+                var cigsperDay = byCodes("63640-7")[0].valueQuantity.value;
+                var postCode = byCodes("45401-7")[0].valueQuantity.value; //Zip code
 
-                var arthritis = byCode("45647-5"); // arthritis
+                var arthritis = byCodes("45647-5")[0].valueQuantity.value; // arthritis
 
                 // End
 
 
-                var hscrp = byCodes("30522-7");
-                var cholesterol = byCodes("14647-2", "2093-3");
-                var hdl = byCodes("2085-9");
-                var systolic = byCodes("8480-6");
+                var hscrp = byCodes("30522-7")[0].valueQuantity.value;
+                var cholesterol = byCodes("14647-2")[0].valueQuantity.value;
+                var hdl = byCodes("2085-9")[0].valueQuantity.value;
+                var rati = holesterol/hdl; //  Cholesterol/HDL ratio -> Calculate from values below?
+                var systolic = byCodes("8480-6")[0].valueQuantity.value;
 
                 var missingData = [];
                 if (hscrp.length == 0) {
