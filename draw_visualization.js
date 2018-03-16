@@ -236,7 +236,7 @@ var qrisk_score = function(p){
     }
   }
 
-  var dage = p.age/10;
+  var dage = p.age.value/10;
   var age_1 = Math.pow(dage, params.age1);
   var age_2 = Math.pow(dage, params.age2);;
   var dbmi = p.bmi/10;
@@ -358,11 +358,11 @@ var reynolds_risk_score = function(p){
   }
 
   var b1 = params.age          * (p.gender.value==='female' ? p.age.value : Math.log(p.age.value))
-    , b2 = params.sbp          * Math.log(p.sbp.value)
+    , b2 = params.sbp          * Math.log(p.sbp)
     , b3 = params.hsCRP        * Math.log(p.hsCRP.value)
-    , b4 = params.cholesterol  * Math.log(p.cholesterol.value)
-    , b5 = params.HDL          * Math.log(p.HDL.value)
-    , b6 = params.smoker       * (p.smoker_p.value ? 1 : 0)
+    , b4 = params.cholesterol  * Math.log(parseFloat(p.cholesterol.value) / 0.026)
+    , b5 = params.HDL          * Math.log(parseFloat(p.HDL.value) / 0.026)
+    , b6 = params.smoker       * (p.smoker_p.value? 1 : 0)
     , b7 = params.fx_of_mi     * (p.fx_of_mi_p.value ? 1 : 0);
 
   var B = b1 + b2 + b3 + b4 + b5 + b6 + b7;
@@ -389,7 +389,7 @@ var assign_score = function (p){
 
 
 		// Get the inputs.
-		var age = p.age;
+		var age = p.age.value;
 		var sex = p.gender.value;
 		var postcode = p.postCode;
 		var chd = p.chdFamilyHistory;
@@ -411,9 +411,9 @@ var assign_score = function (p){
 		var l = accAdd(
 			accMul(betas[sex]["age"], age),
 			accAdd(
-				accMul(betas[sex]["tc"], tc),
+				accMul(betas[sex]["tc"], tc.value),
 				accAdd(
-					accMul(betas[sex]["hdl"], hdl),
+					accMul(betas[sex]["hdl"], hdl.value),
 					accAdd(
 						accMul(betas[sex]["sbp"], sbp),
 						accAdd(

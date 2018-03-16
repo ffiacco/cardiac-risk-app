@@ -57,8 +57,6 @@
         var a = [];
         if (p.gender.value != 'male' && p.gender.value != 'female') a.push('Gender is required')
         if (p.sbp.value < 105 || p.sbp.value > 200) a.push('Systolic blood pressure must be between 105 and 200mm/Hg')
-        if (p.cholesterol.value < 140 || p.cholesterol.value > 400) a.push('Total cholesterol must be between 140 and 400mg/dL')
-        if (p.HDL.value < 30 || p.HDL.value > 150) a.push('HDL cholesterol must be between 30 and 150mg/dL')
         if (p.hsCRP.value < 0.03 || p.hsCRP.value > 20) a.push('hsCRP must be between 0.03 and 20mg/L')
         if (p.smoker_p.value === false || p.smoker_p.value === true) {} else { a.push('Current smoking status must be defined') }
         if (p.fx_of_mi_p.value === false || p.fx_of_mi_p.value === true) {} else { a.push('Family history of heart attack before the age of 60 must be defined') }

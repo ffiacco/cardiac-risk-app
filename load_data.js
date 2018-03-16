@@ -66,18 +66,18 @@
 
                 // Additional variables for Scottish algorithm
                 var chdFamilyHistory = fh_cvd;
-                var cigsperDay = byCodes("63640-7")[0].valueQuantity.value;
-                var postCode = byCodes("45401-7")[0].valueQuantity.value; //Zip code
+                var cigsperDay = 10//byCodes("63640-7")[0].valueQuantity.value;
+                var postCode = "EH8 8EQ"//byCodes("45401-7")[0].valueString; //Zip code
 
-                var arthritis = byCodes("45647-5")[0].valueQuantity.value; // arthritis
+                var arthritis = 0//byCodes("45647-5")[0].valueQuantity.value; // arthritis
 
                 // End
 
 
-                var hscrp = byCodes("30522-7")[0].valueQuantity.value;
+                var hscrp = 0.05//byCodes("30522-7")[0].valueQuantity.value;
                 var cholesterol = byCodes("14647-2")[0].valueQuantity.value;
                 var hdl = byCodes("2085-9")[0].valueQuantity.value;
-                var rati = holesterol/hdl; //  Cholesterol/HDL ratio -> Calculate from values below?
+                var rati = cholesterol/hdl; //  Cholesterol/HDL ratio -> Calculate from values below?
                 var systolic = byCodes("8480-6")[0].valueQuantity.value;
 
                 var missingData = [];
@@ -95,7 +95,6 @@
                 if (systolic.length == 0) {
                     systolic = "120";
                 } else {
-                    systolic = systolic[0].valueQuantity.value;
                     if (systolic < 105) {
                         systolic = 105
                     }
@@ -122,9 +121,9 @@
                 p.gender = { value: gender };
                 p.givenName = { value: fname };
                 p.familyName = { value: lname };
-                p.hsCRP = { value: hscrp_in_mg_per_l(hscrp[0]) };
-                p.cholesterol = { value: cholesterol_in_mg_per_dl(cholesterol[0]) };
-                p.HDL = { value: cholesterol_in_mg_per_dl(hdl[0]) };
+                p.hsCRP = { value: hscrp };
+                p.cholesterol = { value: cholesterol };
+                p.HDL = { value: hdl };
                 p.LDL = { value: p.cholesterol.value - p.HDL.value };
                 p.sbp = { value: systolic };
                 // additional params
@@ -138,7 +137,7 @@
                 p.b_sle = b_sle;
                 p.b_treatedhyp = b_treatedhyp;
                 p.b_type1 = b_type1;
-                p.b_type2 = b_type1;
+                p.b_type2 = b_type2;
                 p.bmi = bmi;
                 p.ethrisk = ethrisk;
                 p.fh_cvd = fh_cvd;
@@ -171,12 +170,7 @@
      * See values at http://www.amamanualofstyle.com/page/si-conversion-calculator
      */
     cholesterol_in_mg_per_dl = function(v) {
-        if (v.valueQuantity.unit === "mg/dL") {
-            return parseFloat(v.valueQuantity.value);
-        } else if (v.valueQuantity.unit === "mmol/L") {
-            return parseFloat(v.valueQuantity.value) / 0.026;
-        }
-        throw "Unanticipated cholesterol units: " + v.valueQuantity.unit;
+        return parseFloat(v) / 0.026;
     };
 
     /**
