@@ -2,6 +2,8 @@ var r;
 
 var p2;
 
+var selectedAlgorithm = "reynolds";
+
 var score_if_non_smoker
     , score_if_sbp_of_120
     , score_if_all_optimal = null;
@@ -361,7 +363,7 @@ var reynolds_risk_score = function(p){
     , b2 = params.sbp          * Math.log(p.sbp)
     , b3 = params.hsCRP        * Math.log(p.hsCRP.value)
     , b4 = params.cholesterol  * Math.log(parseFloat(p.cholesterol.value) / 0.026)
-    , b5 = params.HDL          * Math.log(parseFloat(p.HDL.value) / 0.026)
+    , b5 = params.HDL          * Math.log(parseFloat(p.HDL.value) / 0.1)
     , b6 = params.smoker       * (p.smoker_p.value? 1 : 0)
     , b7 = params.fx_of_mi     * (p.fx_of_mi_p.value ? 1 : 0);
 
@@ -510,17 +512,19 @@ function accDiv (arg1, arg2) {
 
 var compute_other_scores = function(){
   p2 = $.extend(true, {}, p);
-  p2.sbp.value = (p2.sbp.value - 10 >= 0) ? p2.sbp.value - 10 : 0;
-  sbp_10_lower = p2.sbp.value;
-  score_if_sbp_of_10_lower = reynolds_risk_score(p2);
-  p2.sbp.value = p.sbp.value; // reset sbp
+  p2.sbp = (p2.sbp - 10 >= 0) ? p2.sbp - 10 : 0;
+  sbp_10_lower = p2.sbp;
+  score_if_sbp_of_10_lower = (selectedAlgorithm == "reynolds") ? reynolds_risk_score(p2) : ((selectedAlgorithm == "qrisk") ? qrisk_score(p2) : assign_score(p2));;
+  p2.sbp = p.sbp; // reset sbp
   p2.smoker_p.value = false;
-  score_if_non_smoker = reynolds_risk_score(p2);
+  p2.cigsperDay = 0;
+  p2.smoke_cat = 0;
+  score_if_non_smoker = (selectedAlgorithm == "reynolds") ? reynolds_risk_score(p2) : ((selectedAlgorithm == "qrisk") ? qrisk_score(p2) : assign_score(p2));;
   p2.hsCRP.value = 0.5;
-  p2.cholesterol.value = 160;
-  p2.HDL.value = 60
-  p2.LDL.value = 100;
-  score_if_all_optimal = reynolds_risk_score(p2);
+  p2.cholesterol.value = 4.16;
+  p2.HDL.value = 6;
+  p2.LDL.value = 10;
+  score_if_all_optimal = (selectedAlgorithm == "reynolds") ? reynolds_risk_score(p2) : ((selectedAlgorithm == "qrisk") ? qrisk_score(p2) : assign_score(p2));;
 }
 
 var p = {
@@ -562,19 +566,18 @@ var p = {
 }
 
 
-
 var redraw = function(){
-  var score = reynolds_risk_score(p);
+  var score = (selectedAlgorithm == "reynolds") ? reynolds_risk_score(p) : ((selectedAlgorithm == "qrisk") ? qrisk_score(p) : assign_score(p));;
   compute_other_scores();
   r.score_text.animate({opacity: 0}, 500, '>', function(){
-    this.attr({text: score+'%'});
+    this.attr({text: Math.round(score) + ((selectedAlgorithm == "assign") ? "" : '%')});
     this.animate({opacity: 1}, 500, '>');
   })
 
-  r.score_if_sbp_of_10_lower_text.attr({text: score_if_sbp_of_10_lower+'%'});
+  r.score_if_sbp_of_10_lower_text.attr({text: Math.round(score_if_sbp_of_10_lower) + ((selectedAlgorithm == "assign") ? "" : '%')});
   r.sbp_10_lower.attr({text: 'if your blood pressure were '+ sbp_10_lower +'mm/Hg'});
-  r.score_if_all_optimal_text.attr({text: score_if_all_optimal+'%'});
-  r.if_you_quit_set.items[0].attr({text: score_if_non_smoker+'%'});
+  r.score_if_all_optimal_text.attr({text: Math.round(score_if_all_optimal) + ((selectedAlgorithm == "assign") ? "" : '%')});
+  r.if_you_quit_set.items[0].attr({text: Math.round(score_if_non_smoker) + ((selectedAlgorithm == "assign") ? "" : '%')});
   r.risk_prelude.attr({text: 'If you\'re ' + (p.smoker_p.value ? '' : 'not ') +
      'a smoker with a blood pressure\n of ' + p.sbp.value + 'mm/Hg ' + (p.fx_of_mi_p.value ?
       'and have ' : 'and don\'t have ') +
@@ -592,7 +595,7 @@ var redraw = function(){
 }
 
 var draw_visualization = function() {
-    var score = reynolds_risk_score(p);
+    var score = (selectedAlgorithm == "reynolds") ? reynolds_risk_score(p) : ((selectedAlgorithm == "qrisk") ? qrisk_score(p) : assign_score(p));;
     p2 = $.extend(true, {}, p); // deep copy needed here
 
     compute_other_scores();
@@ -668,14 +671,14 @@ var draw_visualization = function() {
       , len_x = max_x - min_x
       , start_value = 100
       , offset_value = 90
-      , start_value_delta = p.sbp.value - offset_value
+      , start_value_delta = p.sbp - offset_value
       , start_x = min_x + start_value_delta
       , y = 55+24+24
       , start_r = 13
       , click_r = 15
 
     r.path('M'+min_x+' '+y+' L'+max_x+' '+y).attr({'stroke': '#aaa', 'stroke-dasharray': '.', 'stroke-linecap': 'butt'})
-    var t = r.g.text(start_x, y, p.sbp.value).attr({'cursor': 'pointer', 'font': '11px Consolas, monospace', 'text-anchor': 'middle', 'font-weight': 'bold', 'fill': '#000'});
+    var t = r.g.text(start_x, y, p.sbp).attr({'cursor': 'pointer', 'font': '11px Consolas, monospace', 'text-anchor': 'middle', 'font-weight': 'bold', 'fill': '#000'});
     c = r.circle(start_x, y, start_r).attr({
       opacity: .5,
       fill: '#F4804E',
@@ -688,7 +691,7 @@ var draw_visualization = function() {
         // storing original coordinates
         this.animate({r: click_r}, 500, ">");
         this.ox = this.attr('cx');
-        this.sbp = p.sbp.value;
+        this.sbp = p.sbp;
     },
     move = function (dx, dy) {
       var cx = this.ox + dx;
@@ -710,7 +713,7 @@ var draw_visualization = function() {
     up = function () {
       this.sbp = Math.round((this.attr('cx') - min_x) + offset_value);
       this.animate({r: start_r}, 500, ">");
-      p.sbp.value = this.sbp;
+      p.sbp = this.sbp;
       redraw();
     };
     c.drag(move, start, up);
@@ -724,8 +727,53 @@ var draw_visualization = function() {
     r.g.text(50, y, 'About this test').attr({'font-size': '18px', 'font-weight': 'bold'})
     r.g.text(50, y+20, 'This report evaluates your potential risk of heart disease, heart attack, and stroke.').attr({'fill': '#888'})
       .attr({'font-size': '14px'})
+    
+    r.circle(500+90, 55 + 80, 8)
+     .attr({
+       stroke: '#F4804E',
+       fill: selectedAlgorithm == "reynolds" ? '#F4804E' : '#F6F6F6' // use a bg colored fill so hover events don't fire only while mouse in on the stroke
+     })
+     .hover(function(){this.attr({'fill': '#F4804F', 'cursor': 'pointer'})},
+            function(){if(selectedAlgorithm != "reynolds")this.attr({'fill': '#F6F6F6', 'cursor': 'normal'})})
+     .click(function(){
+       selectedAlgorithm = "reynolds";
+       $("circle[cx='590']").attr('fill', '#F6F6F6');
+       this.attr('fill', selectedAlgorithm == "reynolds" ? '#F4804E' : '#F6F6F6')
+       redraw();
+    })
+    r.g.text(500+20+90, 55 + 80, 'Reynolds Score').attr({'font-size': '16px', 'font-weight': 'normal'});
+    
+    r.circle(500+90, 55 + 80 + 24, 8)
+     .attr({
+       stroke: '#F4804E',
+       fill: selectedAlgorithm == "qrisk" ? '#F4804E' : '#F6F6F6' // use a bg colored fill so hover events don't fire only while mouse in on the stroke
+     })
+     .hover(function(){this.attr({'fill': '#F4804F', 'cursor': 'pointer'})},
+            function(){if(selectedAlgorithm != "qrisk")this.attr({'fill': '#F6F6F6', 'cursor': 'normal'})})
+     .click(function(){
+       selectedAlgorithm = "qrisk";
+       $("circle[cx='590']").attr('fill', '#F6F6F6');
+       this.attr('fill', selectedAlgorithm == "qrisk" ? '#F4804E' : '#F6F6F6')
+       redraw();
+    })
+    r.g.text(500+20+90, 55 + 80 + 24, 'QRisk Score').attr({'font-size': '16px', 'font-weight': 'normal'});
 
-    r.path("M10 190 L760 190").attr({'stroke-dasharray': '.', 'stroke-linecap': 'butt'});
+    r.circle(500+90, 55 + 80 + 24 + 24, 8)
+     .attr({
+       stroke: '#F4804E',
+       fill: selectedAlgorithm == "assign" ? '#F4804E' : '#F6F6F6' // use a bg colored fill so hover events don't fire only while mouse in on the stroke
+     })
+     .hover(function(){this.attr({'fill': '#F4804F', 'cursor': 'pointer'})},
+            function(){if(selectedAlgorithm != "assign")this.attr({'fill': '#F6F6F6', 'cursor': 'normal'})})
+     .click(function(){
+       selectedAlgorithm = "assign";
+       $("circle[cx='590']").attr('fill', '#F6F6F6');
+       this.attr('fill', selectedAlgorithm == "assign" ? '#F4804E' : '#F6F6F6')
+       redraw();
+    })
+    r.g.text(500+20+90, 55 + 80 + 24 + 24, 'Assign Score').attr({'font-size': '16px', 'font-weight': 'normal'});
+
+    r.path("M10 190 L760 200").attr({'stroke-dasharray': '.', 'stroke-linecap': 'butt'});
 
     y = 210;
     r.circle(30, y, 14).attr({'fill': '#F4804E', 'stroke': 'none'});
@@ -812,9 +860,10 @@ var draw_visualization = function() {
            'z')
            .attr({'fill': '#5E892B', 'stroke': 'none'});
 
-    var circle_x = (unit_w * (p.cholesterol.value / 10)) + x;
+    var cholesterolValue = p.cholesterol.value / 0.026;
+    var circle_x = (unit_w * (cholesterolValue / 10)) + x;
     r.circle(circle_x, y, 22).attr({'fill': '#F4804E', 'stroke': '#fff', 'stroke-width': '2px'});
-    r.g.text(circle_x, y, parseInt(p.cholesterol.value)).attr({'font': '20px Consolas, monospace', 'text-anchor': 'middle', 'font-weight': 'normal', 'fill': '#fff'})
+    r.g.text(circle_x, y, parseInt(cholesterolValue)).attr({'font': '20px Consolas, monospace', 'text-anchor': 'middle', 'font-weight': 'normal', 'fill': '#fff'})
 
 
     var title = 'LDL "bad" cholesterol'
@@ -861,9 +910,10 @@ var draw_visualization = function() {
            'z')
            .attr({'fill': '#5E892B', 'stroke': 'none'});
 
-    var circle_x = (unit_w * (p.LDL.value / 10)) + x;
+    var LDLValue = p.LDL.value / 0.1;
+    var circle_x = (unit_w * (LDLValue / 10)) + x;
     r.circle(circle_x, y, 18).attr({'fill': '#F4804E', 'stroke': '#fff', 'stroke-width': '2px'});
-    r.g.text(circle_x, y, parseInt(p.LDL.value)).attr({'font': '16px Consolas, monospace', 'text-anchor': 'middle', 'font-weight': 'normal', 'fill': '#fff'})
+    r.g.text(circle_x, y, parseInt(LDLValue)).attr({'font': '16px Consolas, monospace', 'text-anchor': 'middle', 'font-weight': 'normal', 'fill': '#fff'})
 
     var title = 'HDL "good" cholesterol'
       , x = 140
@@ -900,9 +950,10 @@ var draw_visualization = function() {
            'z')
            .attr({'fill': '#5E892B', 'stroke': 'none'});
 
-    var circle_x = (unit_w * (p.HDL.value / 10)) + x;
+    var HDLValue = p.HDL.value / 0.1;
+    var circle_x = (unit_w * (HDLValue / 10)) + x;
     r.circle(circle_x, y, 18).attr({'fill': '#F4804E', 'stroke': '#fff', 'stroke-width': '2px'});
-    r.g.text(circle_x, y, parseInt(p.HDL.value)).attr({'font': '16px Consolas, monospace', 'text-anchor': 'middle', 'font-weight': 'normal', 'fill': '#fff'})
+    r.g.text(circle_x, y, parseInt(HDLValue)).attr({'font': '16px Consolas, monospace', 'text-anchor': 'middle', 'font-weight': 'normal', 'fill': '#fff'})
 
 
     r.path("M10 700 L760 700").attr({'stroke-dasharray': '.', 'stroke-linecap': 'butt'})
@@ -918,21 +969,21 @@ var draw_visualization = function() {
       .attr({'font-size': '14px', 'font-weight': 'normal', 'fill': '#888'})
 
 
-    r.score_text = r.g.text(320, 780, score+'%')
+    r.score_text = r.g.text(330, 775, Math.round(score) + ((selectedAlgorithm == "assign") ? "" : '%'))
       .attr({'font-size': '72px', 'font-weight': 'bold', 'fill': '#6A9C2D', 'font-family': "Consolas, monospace", 'font-weight': '900'})
 
     y = 750;
     r.g.text(450, y, 'Your risk would be lowered to:').attr({'font-size': '14px', 'font-weight': 'bold', 'fill': '#555'})
 
-    r.score_if_sbp_of_10_lower_text = r.g.text(460, y+16, score_if_sbp_of_10_lower+'%').attr({'font-size': '14px', 'font-weight': 'bold', 'fill': '#555'})
+    r.score_if_sbp_of_10_lower_text = r.g.text(460, y+16, Math.round(score_if_sbp_of_10_lower) + ((selectedAlgorithm == "assign") ? "" : '%')).attr({'font-size': '14px', 'font-weight': 'bold', 'fill': '#555'})
     r.sbp_10_lower =  r.g.text(450+36, y+16, 'if your blood pressure were ' + sbp_10_lower + 'mm/Hg').attr({'font-size': '14px', 'fill': '#888'})
 
-    r.score_if_all_optimal_text = r.g.text(460, y+32, score_if_all_optimal+'%').attr({'font-size': '14px', 'font-weight': 'bold', 'fill': '#555'})
+    r.score_if_all_optimal_text = r.g.text(460, y+32, Math.round(score_if_all_optimal) + ((selectedAlgorithm == "assign") ? "" : '%')).attr({'font-size': '14px', 'font-weight': 'bold', 'fill': '#555'})
     r.g.text(450+36, y+32, 'if you didn\'t smoke and all levels were optimal').attr({'font-size': '14px', 'fill': '#888'})
 
 
     r.if_you_quit_set.push(
-      r.g.text(460, y+48, score_if_non_smoker+'%').attr({'font-size': '14px', 'font-weight': 'bold', 'fill': '#555'}),
+      r.g.text(460, y+48, Math.round(score_if_non_smoker) + ((selectedAlgorithm == "assign") ? "" : '%')).attr({'font-size': '14px', 'font-weight': 'bold', 'fill': '#555'}),
       r.g.text(450+36, y+48, 'if you quit smoking').attr({'font-size': '14px', 'fill': '#888'})
     );
 

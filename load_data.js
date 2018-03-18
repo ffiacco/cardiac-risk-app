@@ -74,7 +74,7 @@
                 // End
 
 
-                var hscrp = 0.05//byCodes("30522-7")[0].valueQuantity.value;
+                var hscrp = 1.2//byCodes("30522-7")[0].valueQuantity.value;
                 var cholesterol = byCodes("14647-2")[0].valueQuantity.value;
                 var hdl = byCodes("2085-9")[0].valueQuantity.value;
                 var rati = cholesterol/hdl; //  Cholesterol/HDL ratio -> Calculate from values below?
@@ -148,6 +148,7 @@
                 p.b_impotence = b_impotence;
                 p.postCode = postCode;
                 p.cigsperDay = cigsperDay;
+                p.smoker_p.value = (cigsperDay > 0);
                 p.chdFamilyHistory = chdFamilyHistory;
                 p.arthritis = arthritis;
                 
@@ -163,27 +164,6 @@
             smoker_p: { value: false },
             fx_of_mi_p: { value: false }
         }
-    };
-
-    /**
-     * Unit conversion formula.
-     * See values at http://www.amamanualofstyle.com/page/si-conversion-calculator
-     */
-    cholesterol_in_mg_per_dl = function(v) {
-        return parseFloat(v) / 0.026;
-    };
-
-    /**
-     * Unit conversion formula.
-     * See values at http://www.amamanualofstyle.com/page/si-conversion-calculator
-     */
-    hscrp_in_mg_per_l = function(v) {
-        if (v.valueQuantity.unit === "mg/L") {
-            return parseFloat(v.valueQuantity.value);
-        } else if (v.valueQuantity.unit === "mmol/L") {
-            return parseFloat(v.valueQuantity.value.value) / 0.10;
-        }
-        throw "Unanticipated hsCRP units: " + v.valueQuantity.unit;
     };
 
 })(window);
