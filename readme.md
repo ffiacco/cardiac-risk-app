@@ -12,6 +12,8 @@ npm install
 npm run serve
 ```
 
+To run with our dummy patient, Ivor Cox, go to  http://localhost:8001/launch.html?fhirServiceUrl=http://hapi.fhir.org/baseDstu3&patientId=1203706 after having ran the npm run serve command.
+
 # Public Demo #
 See app in [SMART's Gallery](https://gallery.smarthealthit.org/boston-childrens-hospital/cardiac-risk)
 
