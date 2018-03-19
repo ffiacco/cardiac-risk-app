@@ -6,7 +6,9 @@ var selectedAlgorithm = "reynolds";
 
 var score_if_non_smoker
     , score_if_sbp_of_120
-    , score_if_all_optimal = null;
+    , score_if_all_optimal = null,
+    cigsperDay,
+    smoke_cat;
 
 // Flag to indicate when any value is out of usual range.
     var outOfUsualRange = false;
@@ -643,7 +645,13 @@ var draw_visualization = function() {
      .hover(function(){this.attr({'fill': '#F4804F', 'cursor': 'pointer'})},
             function(){if(!p.smoker_p.value)this.attr({'fill': '#F6F6F6', 'cursor': 'normal'})})
      .click(function(){
-       p.smoker_p.value = !p.smoker_p.value
+       if (p.smoker_p.value){
+         cigsperDay = p.cigsperDay;
+         smoke_cat = p.smoke_cat;
+       }
+       p.cigsperDay = (p.smoker_p.value) ? 0 : cigsperDay;
+       p.smoke_cat = (p.smoker_p.value) ? 0 : smoke_cat;
+       p.smoker_p.value = !p.smoker_p.value;
        this.attr('fill', p.smoker_p.value ? '#F4804E' : '#F6F6F6')
        redraw();
      })
@@ -657,6 +665,8 @@ var draw_visualization = function() {
       .hover(function(){this.attr({'fill': '#F4804F', 'cursor': 'pointer'})},
              function(){if(!p.fx_of_mi_p.value)this.attr({'fill': '#F6F6F6', 'cursor': 'normal'})})
       .click(function(){
+        p.chdFamilyHistory = (p.fx_of_mi_p.value) ? 0 : 1;
+        p.fh_cvd = (p.fx_of_mi_p.value) ? 0 : 1;
         p.fx_of_mi_p.value = !p.fx_of_mi_p.value
         this.attr('fill', p.fx_of_mi_p.value ? '#F4804E' : '#F6F6F6')
         redraw();
@@ -1195,7 +1205,6 @@ function loadPostcodeRegion(postcode) {
       	s.className = 'postcodeRegion';
 
       	document.body.appendChild(s);
-        loaded();
 	} catch(err) {
 		simdScore = 20;
 	//	showNotice("postcode", "Unable to match postcode sufficiently to allocate a specific SIMD code. Default median value 15.89 used for ASSIGN.");
