@@ -388,10 +388,6 @@ var reynolds_risk_score = function(p){
 }
 
 var assign_score = function (p){
-
-    
-
-
 		// Get the inputs.
 		var age = p.age.value;
 		var sex = p.gender.value;
@@ -404,8 +400,10 @@ var assign_score = function (p){
 		var tc = p.cholesterol;
 		var hdl = p.HDL;
 
-    if (postcode != null)
+    if (postcode != null){
       loadPostcodeRegion(postcode);
+    }
+
 
 		if (arthritis > 0) {
 			cpd = parseInt(cpd, 10) + 10;
@@ -1132,6 +1130,7 @@ function loaded() {
 		//showNotice("postcode", "Unable to match postcode sufficiently to allocate a specific SIMD code. Default median value 15.89 used for ASSIGN.");
 		defaultSimd = true;
 	}
+
 }
 
 /***
@@ -1212,4 +1211,13 @@ function loadPostcodeRegion(postcode) {
 		defaultSimd = true;
 		return;
 	}
+}
+
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
 }
